@@ -1,0 +1,1 @@
+export const backendEndPoint = 'https://crypto-mania-api-production.up.railway.app'
