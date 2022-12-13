@@ -39,6 +39,7 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+
   useEffect(() => {
     if (voicePageNavigation) {
       navigate(voicePageNavigation);
@@ -47,6 +48,7 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
       setVoicePageNavigation("");
     };
   }, [voicePageNavigation]);
+
   useEffect(() => {
     if (apiData) {
       setPopup(!popup);
@@ -56,6 +58,7 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
       setValue(apiData.jwt);
     }
   }, [apiData, error]);
+  
   useEffect(() => {
     if (error) {
       setTimeout(() => {
