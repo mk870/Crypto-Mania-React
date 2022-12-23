@@ -12,7 +12,7 @@ import ApiError from '../../components/HandleErrors/ApiError'
 import Spinner from '../../components/HandleLoading/Spinner'
 import HTMLReactParser from 'html-react-parser'
 import { colors } from '../utils/ThemeColors'
-import { backendEndPoint } from '../utils/BackendEndPoint'
+import { aiBackendEndPoint } from '../utils/BackendEndPoint'
 
 const search = 'cryptocurrencies'
 const Home = ({voicePageNavigation,setVoicePageNavigation}) => {
@@ -37,10 +37,7 @@ const Home = ({voicePageNavigation,setVoicePageNavigation}) => {
       return HTMLReactParser(data.split('\n')[0])
     }
   }
-  const today = new Date()
-  const date = today.getDate()
-  const month = today.getMonth()
-  const year = today.getFullYear()
+  
   useEffect(()=>{
     setError('')
     setCryptos('')
@@ -53,7 +50,7 @@ const Home = ({voicePageNavigation,setVoicePageNavigation}) => {
   },[])
   useEffect(()=>{
     setNews('')
-    fetch(`${backendEndPoint}/api/news`)
+    fetch(`${aiBackendEndPoint}/getNews`)
     .then(response => {
       if(!response.ok){
         throw Error('Could not fetch data please check your network connection')
@@ -122,7 +119,7 @@ const Home = ({voicePageNavigation,setVoicePageNavigation}) => {
             <div className="crypto" key={index} onClick={()=>navigate(`/crypto/${crypto.uuid}`)}>
               <div className="id">
                 <span>{crypto.rank}.{crypto.name}</span>
-                <img src={crypto.iconUrl} alt="crypto-image" />
+                <img src={crypto.iconUrl} alt="crypto" />
               </div>
               <div className="cryptoInfo">
                 <p>Price: {millify(crypto.price)}</p>

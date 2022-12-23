@@ -8,9 +8,8 @@ import { useSelector } from 'react-redux'
 import newspic from '../../images/news.png'
 import { colors } from '../utils/ThemeColors'
 import { useNavigate } from 'react-router-dom'
-import { backendEndPoint } from '../utils/BackendEndPoint'
+import { aiBackendEndPoint } from '../utils/BackendEndPoint'
 
-const search = 'cryptocurrencies'
 
 const News = ({voicePageNavigation,setVoicePageNavigation}) => {
   const[news,setNews] = useState('')
@@ -40,14 +39,10 @@ const News = ({voicePageNavigation,setVoicePageNavigation}) => {
   const titlecleaner = (data)=>{
     return(data.replace(/[^a-zA-Z0-9]/g," "))
   }
-  const today = new Date()
-  const date = today.getDate()
-  const month = today.getMonth()
-  const year = today.getFullYear()
   
   useEffect(()=>{
     if(!newsinfo){
-      fetch(`${backendEndPoint}/api/news`)
+      fetch(`${aiBackendEndPoint}/getNews`)
       .then(response => {
         if(!response.ok){
           throw Error('Could not fetch data please check your network connection')
