@@ -69,4 +69,4 @@
 ### **Productionization**
 In this step, I deployed the app to heroku cloud.
 
-**Live Implemantation:** [CryptoMania](https://react-cryptomania.herokuapp.com)
+**Live Implemantation:** [CryptoMania](https://crypto-mania-react.vercel.app)
