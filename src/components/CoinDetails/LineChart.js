@@ -15,6 +15,7 @@ import {
   Legend,
 } from "chart.js";
 import CoinPricePrediction from "./CoinPricePrediction";
+import { getTime } from "./Utilis/AxisDataPreprocessing";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -42,60 +43,53 @@ const LineChart = ({
     cointime.push(new Date(history[i].timestamp * 1000));
   }
 
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sept",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
 
   const data = {
     labels: cointime.reverse().map((time) => {
-      let daytime =
-        time.getHours() > 12
-          ? `${time.getDate()}/${months[time.getMonth()]}/${
-              time.getHours() - 12
-            }:${time.getMinutes()} PM`
-          : `${time.getDate()}/${
-              months[time.getMonth()]
-            }/${time.getHours()}:${time.getMinutes()} AM`;
-      return timePeriod === "3h" ||
+      const daytime = getTime(timePeriod, time);
+			return timePeriod === "3h" ||
         timePeriod === "24h" ||
         timePeriod === "7d" ||
         timePeriod === "30d" ||
-        timePeriod === "3m"
-        ? daytime
-        : time.toLocaleDateString();
+        timePeriod === "3m" ||
+        timePeriod === "3y" ||
+        timePeriod === "5y"
+				? daytime
+				: time.toLocaleDateString();
     }),
     datasets: [
       {
         label: "Price in USD",
         data: coinprice.reverse(),
         fill: false,
-        backgroundColor: "#0071bd",
+        backgroundColor: "rgba(255,0,0,0.0)",
         borderColor: "#0071bd",
+				borderWidth: 2,
+				pointStyle: "circle",
+				radius: 2,
+				hoverRadius: 3,
+				pointBorderColor: "rgba(255,0,0,0.0)"
       },
     ],
   };
+
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+      x: {
+        grid: {
+            display:false
+        }
+    },
+    y: {
+      grid: {
+          display:false
+      }
+    },
     },
   };
+
   const showPred = (coinId) => {
     if (
       coinId === "Qwsogvtv82FCd" ||
@@ -107,6 +101,7 @@ const LineChart = ({
       );
     }
   };
+  
   return (
     <LineChartStyles colors={colors(theme)}>
       <div className="header">

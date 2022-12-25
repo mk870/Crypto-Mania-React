@@ -22,6 +22,7 @@ const CrtyptoDetails = ({ voicePageNavigation, setVoicePageNavigation }) => {
   const [timePeriod, setTimePeriod] = useState("7d");
   const time = ["3h", "24h", "7d", "30d", "3m", "1y", "3y", "5y"];
   const navigate = useNavigate();
+
   useEffect(() => {
     setError("");
     setCoinData("");
@@ -34,6 +35,7 @@ const CrtyptoDetails = ({ voicePageNavigation, setVoicePageNavigation }) => {
         setError("failed to fetch Please check Network connection");
       });
   }, [coinId]);
+  
   useEffect(() => {
     setError("");
     setHistory("");

@@ -9,6 +9,7 @@ export const LineChartStyles = styled.div`
   .chart{
     width: 95%;
     background:white;
+    height:500px;
   }
   .header{
     display:flex;

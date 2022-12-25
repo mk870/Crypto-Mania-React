@@ -67,27 +67,42 @@ const PredictedLineChart = ({ history, prediction, name, price, preddays }) => {
         label: "Historical Price in USD",
         data: actualprice(histprice.reverse()),
         fill: false,
-        backgroundColor: "#0071bd",
+        backgroundColor: "rgba(255,0,0,0.0)",
         borderColor: "#0071bd",
+        borderWidth: 2,
+				pointStyle: "circle",
+				radius: 2,
+				hoverRadius: 3,
+				pointBorderColor: "rgba(255,0,0,0.0)"
       },
       {
         label: "Predicted Price in USD",
         data: predfutureprice(predprice.reverse()),
         fill: false,
-        backgroundColor: "red",
+        backgroundColor: "rgba(255,0,0,0.0)",
         borderColor: "red",
+        borderWidth: 2,
+				pointStyle: "circle",
+				radius: 2,
+				hoverRadius: 3,
+				pointBorderColor: "rgba(255,0,0,0.0)"
       },
     ],
   };
   const options = {
+    responsive: true,
+    maintainAspectRatio: false,
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          },
-        },
-      ],
+      x: {
+        grid: {
+            display:false
+        }
+    },
+    y: {
+      grid: {
+          display:false
+      }
+    },
     },
   };
 
