@@ -1,8 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { LineChartStyles } from "./Styles/LineChartStyles";
 import { useSelector } from "react-redux";
-import { colors } from "../utils/ThemeColors";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -16,6 +14,9 @@ import {
 } from "chart.js";
 import CoinPricePrediction from "./CoinPricePrediction";
 import { getTime } from "./Utilis/AxisDataPreprocessing";
+import { LineChartStyles } from "./Styles/LineChartStyles";
+import { colors } from "../../components/utils/ThemeColors";
+
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -43,19 +44,18 @@ const LineChart = ({
     cointime.push(new Date(history[i].timestamp * 1000));
   }
 
-
   const data = {
     labels: cointime.reverse().map((time) => {
       const daytime = getTime(timePeriod, time);
-			return timePeriod === "3h" ||
+      return timePeriod === "3h" ||
         timePeriod === "24h" ||
         timePeriod === "7d" ||
         timePeriod === "30d" ||
         timePeriod === "3m" ||
         timePeriod === "3y" ||
         timePeriod === "5y"
-				? daytime
-				: time.toLocaleDateString();
+        ? daytime
+        : time.toLocaleDateString();
     }),
     datasets: [
       {
@@ -64,11 +64,11 @@ const LineChart = ({
         fill: false,
         backgroundColor: "rgba(255,0,0,0.0)",
         borderColor: "#0071bd",
-				borderWidth: 2,
-				pointStyle: "circle",
-				radius: 2,
-				hoverRadius: 3,
-				pointBorderColor: "rgba(255,0,0,0.0)"
+        borderWidth: 2,
+        pointStyle: "circle",
+        radius: 2,
+        hoverRadius: 3,
+        pointBorderColor: "rgba(255,0,0,0.0)",
       },
     ],
   };
@@ -79,14 +79,14 @@ const LineChart = ({
     scales: {
       x: {
         grid: {
-            display:false
-        }
-    },
-    y: {
-      grid: {
-          display:false
-      }
-    },
+          display: false,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+      },
     },
   };
 
@@ -101,7 +101,7 @@ const LineChart = ({
       );
     }
   };
-  
+
   return (
     <LineChartStyles colors={colors(theme)}>
       <div className="header">

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { colors } from "../utils/ThemeColors";
 import HTMLReactParser from "html-react-parser";
-import newspic from "../../images/news.png";
 import moment from "moment";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
 import { AiNewsStyles } from "./AiNewsStyles";
+import { colors } from "../../components/utils/ThemeColors";
+import newspic from "../../images/news.png";
 
 const AiNews = ({
   aiNews,

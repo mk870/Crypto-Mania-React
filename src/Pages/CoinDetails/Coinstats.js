@@ -1,8 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import { CoinStatsStyles } from "./Styles/CoinStatsStyles";
+import jwt_decode from "jwt-decode";
 import millify from "millify";
 import { useSelector } from "react-redux";
-import { colors } from "../utils/ThemeColors";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import {
   FcPositiveDynamic,
@@ -15,16 +14,20 @@ import { BsTrophyFill } from "react-icons/bs";
 import { ImListNumbered } from "react-icons/im";
 import { GiMoneyStack } from "react-icons/gi";
 import { BiRotateRight } from "react-icons/bi";
-import { Button2 } from "../Buttons/Button2";
 import axios from "axios";
-import ApiConfirmationPopUp from "../Popups/ApiConfirmationPopUp";
-import { JwtContext } from "../utils/AppContext";
 import { useNavigate } from "react-router-dom";
-import { backendEndPoint } from "../utils/BackendEndPoint";
+
+import { CoinStatsStyles } from "./Styles/CoinStatsStyles";
+import { colors } from "../../components/utils/ThemeColors";
+import { Button2 } from "../../components/Buttons/Button2";
+import ApiConfirmationPopUp from "../../components/Popups/ApiConfirmationPopUp";
+import { backendEndPoint } from "../../components/utils/BackendEndPoint";
+import { JwtContext } from "../../components/utils/AppContext";
 
 const Coinstats = ({ coindata }) => {
   const theme = useSelector((state) => state.theme.value);
   const { value } = useContext(JwtContext);
+  const { setValue } = useContext(JwtContext);
   const [apiData, setApiData] = useState("");
   const [popup, setPopup] = useState(false);
   const [onload, setOnload] = useState(false);
@@ -54,30 +57,41 @@ const Coinstats = ({ coindata }) => {
   };
   const AddToWatchList = (data) => {
     let coinInfo = {
-      name: convertToString(data.name),
-      mktCap: convertToString(millify(data.marketCap)),
-      rank: convertToString(data.rank),
-      allTimeHighPrice: convertToString(millify(data.allTimeHigh.price)),
-      coinsInCirculation: convertToString(millify(data.supply.circulating)),
+      Name: convertToString(data.name),
+      MktCap: convertToString(millify(data.marketCap)),
+      Rank: convertToString(data.rank),
+      AllTimeHighPrice: convertToString(millify(data.allTimeHigh.price)),
+      CoinsInCirculation: convertToString(millify(data.supply.circulating)),
     };
-
     if (value) {
-      setOnload(true);
-      setApiData("");
-      setError("");
-      axios
-        .post(`${backendEndPoint}/api/account/save`, coinInfo, {
-          headers: { Authorization: `Bearer ${value}` },
-        })
-        .then((data) => {
-          setApiData(data.data);
-          setError("");
-        })
-        .catch((e) => {
-          setError(e.message);
-        });
-    } else {
-      navigate("/login");
+      const user = jwt_decode(value);
+      const exp = user.exp * 1000;
+      const expiryTime = new Date(exp).getTime();
+      const currentTime = new Date().getTime();
+      if (currentTime >= expiryTime) {
+        setValue(null)
+        navigate("/login");
+      } else {
+        setOnload(true);
+        setApiData("");
+        setError("");
+        axios
+          .post(`${backendEndPoint}/coin`, coinInfo, {
+            headers: { Authorization: `Bearer ${value}` },
+          })
+          .then((data) => {
+            setApiData(data.data);
+            setError("");
+          })
+          .catch((e) => {
+            if (e.response?.data?.error !== "") {
+              setError(e.response?.data?.error);
+            }
+            if (JSON.stringify(e).message === "Network Error") {
+              setError("your internet connection is poor");
+            }
+          });
+      }
     }
   };
   return (

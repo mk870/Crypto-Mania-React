@@ -43,7 +43,7 @@ export const NavbarStyles = styled.nav`
         }
       }
       .menu{
-      margin-left:10px;
+      margin-left:13px;
       span{
         color:white;
         &:hover{

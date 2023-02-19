@@ -1,42 +1,55 @@
-import React, { useState, useEffect } from "react";
-import ApiError from "../HandleErrors/ApiError";
-import { Button2 } from "../Buttons/Button2";
-import { JwtContext } from "../utils/AppContext";
-import useFetchAuthorization from "../DataBaseApiFunctions/useFetchAuthorization";
-import Spinner from "../HandleLoading/Spinner";
-import { MyWatchListStyles } from "./MyWatchListStyles";
+import React, { useState, useEffect, useContext } from "react";
 import { useSelector } from "react-redux";
-import { colors } from "../utils/ThemeColors";
-import { DeleteApiCall } from "../DataBaseApiFunctions/DeleteApiCall";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { backendEndPoint } from "../utils/BackendEndPoint";
+import jwt_decode from "jwt-decode";
+
+import { Button2 } from "../../components/Buttons/Button2";
+import { DeleteApiCall } from "../../components/DataBaseApiFunctions/DeleteApiCall";
+import useFetchAuthorization from "../../components/DataBaseApiFunctions/useFetchAuthorization";
+import ApiError from "../../components/HandleErrors/ApiError";
+import Spinner from "../../components/HandleLoading/Spinner";
+import { JwtContext } from "../../components/utils/AppContext";
+import { backendEndPoint } from "../../components/utils/BackendEndPoint";
+import { colors } from "../../components/utils/ThemeColors";
+import { MyWatchListStyles } from "./MyWatchListStyles";
 
 const MyWatchList = ({ voicePageNavigation, setVoicePageNavigation }) => {
   const theme = useSelector((state) => state.theme.value);
   const [onDelete, setOnDelete] = useState("");
   const [error, setError] = useState("");
+  const [isTokenExpired, setIsTokenExpired] = useState(false);
   const navigate = useNavigate();
   const [onload, setOnload] = useState(false);
   const { value } = useContext(JwtContext);
+  const { setValue } = useContext(JwtContext);
   const { apiData } = useFetchAuthorization(
-    `${backendEndPoint}/api/account/cryptos`,
+    `${backendEndPoint}/coins`,
     setOnload,
     onDelete,
     setOnDelete,
     setError,
-    error
+    error,
+    isTokenExpired,
+    setIsTokenExpired
   );
 
   const deleteItem = (id) => {
-    DeleteApiCall(
-      `${backendEndPoint}/api/account/crypto/${id}`,
-      value,
-      setOnDelete,
-      setError
-    );
+    const user = jwt_decode(value);
+    const exp = user.exp * 1000;
+    const expiryTime = new Date(exp).getTime();
+    const currentTime = new Date().getTime();
+    if (currentTime >= expiryTime) {
+      setIsTokenExpired(true);
+    } else {
+      setIsTokenExpired(false);
+      DeleteApiCall(
+        `${backendEndPoint}/coin/${id}`,
+        value,
+        setOnDelete,
+        setError
+      );
+    }
   };
-
   useEffect(() => {
     if (voicePageNavigation) {
       navigate(voicePageNavigation);
@@ -45,6 +58,10 @@ const MyWatchList = ({ voicePageNavigation, setVoicePageNavigation }) => {
       setVoicePageNavigation("");
     };
   }, [voicePageNavigation]);
+
+  useEffect(() => {
+    if (isTokenExpired) setValue(null);
+  }, [isTokenExpired]);
 
   return (
     <MyWatchListStyles colors={colors(theme)}>
@@ -75,15 +92,15 @@ const MyWatchList = ({ voicePageNavigation, setVoicePageNavigation }) => {
                 </div>
                 <div className="coin">
                   <span className="description">Market Cap</span>
-                  <span>{crypto.mktCap}</span>
+                  <span>{crypto.mktcap}</span>
                 </div>
                 <div className="coin">
                   <span className="description">All Time Price High</span>
-                  <span>{crypto.allTimeHighPrice}</span>
+                  <span>{crypto.alltimehighprice}</span>
                 </div>
                 <div className="coin">
                   <span className="description">Coins In Circulation</span>
-                  <span>{crypto.coinsInCirculation}</span>
+                  <span>{crypto.coinsincirculation}</span>
                 </div>
                 <div className="btn">
                   <button onClick={() => deleteItem(crypto.id)}>Delete</button>

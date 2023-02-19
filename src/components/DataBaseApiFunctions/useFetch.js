@@ -8,22 +8,22 @@ const UseFetch = (url,jwt) => {
   const [error,setError] = useState('')
   const {setValue} = useContext(JwtContext)
   useEffect(() => {
-    axios.get(url,{headers:{"Authentication" : `Bearer ${jwt}`}})
+    axios.get(url,{headers:{"Authorization" : `Bearer ${jwt}`}})
     .then(data =>{
       setApiData(data.data)
       setError('')
-      if('jwt' in data.data){
-        setValue(data.data.jwt)
+      if('accessToken' in data.data){
+        setValue(data.data.accessToken)
       }
-      
-      console.log(data.data)
     })
     .catch(e =>{
-      console.log(e.message)
-      setError(e.message)
+      if (e.response?.data.error !== "") {
+        setError(e.response?.data.error);
+      }
+      if (JSON.stringify(e).message === "Network Error") {
+        setError("your internet connection is poor");
+      }
     })
-  
-    
   }, [])
   
   return{apiData,error,setError}

@@ -1,8 +1,6 @@
 import React from "react";
-import { PredictedLineChartStyles } from "./Styles/PredictedLineChartStyles";
 import { FcHighPriority } from "react-icons/fc";
 import { useSelector } from "react-redux";
-import { colors } from "../utils/ThemeColors";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -14,6 +12,8 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { PredictedLineChartStyles } from "./Styles/PredictedLineChartStyles";
+import { colors } from "../../components/utils/ThemeColors";
 
 ChartJS.register(
   CategoryScale,
@@ -70,10 +70,10 @@ const PredictedLineChart = ({ history, prediction, name, price, preddays }) => {
         backgroundColor: "rgba(255,0,0,0.0)",
         borderColor: "#0071bd",
         borderWidth: 2,
-				pointStyle: "circle",
-				radius: 2,
-				hoverRadius: 3,
-				pointBorderColor: "rgba(255,0,0,0.0)"
+        pointStyle: "circle",
+        radius: 2,
+        hoverRadius: 3,
+        pointBorderColor: "rgba(255,0,0,0.0)",
       },
       {
         label: "Predicted Price in USD",
@@ -82,10 +82,10 @@ const PredictedLineChart = ({ history, prediction, name, price, preddays }) => {
         backgroundColor: "rgba(255,0,0,0.0)",
         borderColor: "red",
         borderWidth: 2,
-				pointStyle: "circle",
-				radius: 2,
-				hoverRadius: 3,
-				pointBorderColor: "rgba(255,0,0,0.0)"
+        pointStyle: "circle",
+        radius: 2,
+        hoverRadius: 3,
+        pointBorderColor: "rgba(255,0,0,0.0)",
       },
     ],
   };
@@ -95,14 +95,14 @@ const PredictedLineChart = ({ history, prediction, name, price, preddays }) => {
     scales: {
       x: {
         grid: {
-            display:false
-        }
-    },
-    y: {
-      grid: {
-          display:false
-      }
-    },
+          display: false,
+        },
+      },
+      y: {
+        grid: {
+          display: false,
+        },
+      },
     },
   };
 

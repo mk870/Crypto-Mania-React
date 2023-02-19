@@ -2,31 +2,32 @@ import {
   BrowserRouter,
   Routes,
   Route,
-  Navigate,
-  useNavigate,
+  Navigate
 } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
 import { Globalstyles } from "./components/GlobalStyles/GlobalStyles";
-import Home from "./components/Home/Home";
 import Navbar from "./components/MenuBars/Navbar";
 import Sidebar from "./components/MenuBars/Sidebar";
 import Footer from "./components/Footer/Footer";
-import CryptoDashboard from "./components/Dashboards/CryptoDashboard";
-import News from "./components/NewsPage/News";
 import Errorpage from "./components/HandleErrors/Errorpage";
-import CryptoDetails from "./components/CoinDetails/CryptoDetails";
-import CryptoExchanges from "./components/Dashboards/CryptoExchanges";
-import MyWatchList from "./components/MyCryptoWatchlist/MyWatchList";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { colors } from "./components/utils/ThemeColors";
-import LoginPage from "./components/Login/LoginPage";
-import SignupPage from "./components/Signup/SignupPage";
-import Verification from "./components/Verification/Verification";
 import { JwtContext } from "./components/utils/AppContext";
 import { useLocaleStorage } from "./components/utils/useLocaleStorage";
 import useAlan from "./components/AlanVoice/useAlan";
-import AiNews from "./components/NewsPage/AiNews";
-import VoiceCommands from "./components/VoiceCommands/VoiceCommands";
+import VoiceCommands from "./Pages/VoiceCommands/VoiceCommands";
+import AiNews from "./Pages/NewsPage/AiNews";
+import Verification from "./Pages/Verification/Verification";
+import SignupPage from "./Pages/Signup/SignupPage";
+import CryptoDashboard from "./Pages/Dashboards/CryptoDashboard";
+import CryptoExchanges from "./Pages/Dashboards/CryptoExchanges";
+import News from "./Pages/NewsPage/News";
+import CrtyptoDetails from "./Pages/CoinDetails/CryptoDetails";
+import LoginPage from "./Pages/Login/LoginPage";
+import Home from "./Pages/Home/Home";
+import MyWatchList from "./Pages/MyCryptoWatchlist/MyWatchList";
+
 
 function App() {
   const [activeMenu, setActiveMenu] = useState(true);
@@ -159,7 +160,7 @@ function App() {
             <Route
               path="/crypto/:coinId"
               element={
-                <CryptoDetails
+                <CrtyptoDetails
                   voicePageNavigation={voicePageNavigation}
                   setVoicePageNavigation={setVoicePageNavigation}
                 />

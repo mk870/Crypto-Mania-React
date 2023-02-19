@@ -1,19 +1,20 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { VerificationStyles } from "./VerificationStyles";
-import UseFetch from "../DataBaseApiFunctions/useFetch";
-import Spinner from "../HandleLoading/Spinner";
 import { useSelector } from "react-redux";
-import ApiError from "../HandleErrors/ApiError";
-import { colors } from "../utils/ThemeColors";
-import { backendEndPoint } from "../utils/BackendEndPoint";
+
+import { VerificationStyles } from "./VerificationStyles";
+import ApiError from "../../components/HandleErrors/ApiError";
+import Spinner from "../../components/HandleLoading/Spinner";
+import { colors } from "../../components/utils/ThemeColors";
+import { backendEndPoint } from "../../components/utils/BackendEndPoint";
+import UseFetch from "../../components/DataBaseApiFunctions/useFetch";
 
 const Verification = ({ voicePageNavigation, setVoicePageNavigation }) => {
   const theme = useSelector((state) => state.theme.value);
   const navigate = useNavigate();
   const { token } = useParams();
-  const { apiData, error, setError } = UseFetch(
-    `${backendEndPoint}/api/verifyRegistration?token=${token}`,
+  const { apiData, error} = UseFetch(
+    `${backendEndPoint}/verification/${token}`,
     null
   );
   useEffect(() => {

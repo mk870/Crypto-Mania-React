@@ -1,17 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { coinOptions } from "../ApiOptions/CoinOptions";
+import millify from "millify";
+import { useSelector } from "react-redux";
+
 import CoinDescription from "./CoinDescription";
 import Coinstats from "./Coinstats";
 import LineChart from "./LineChart";
 import { CryptoDetailsStyles } from "./Styles/CryptoDetailsStyles";
-import millify from "millify";
-import { historyOptions } from "../ApiOptions/CoinHistory";
-import ApiError from "../HandleErrors/ApiError";
-import Spinner from "../HandleLoading/Spinner";
-import { useSelector } from "react-redux";
-import { colors } from "../utils/ThemeColors";
+import Spinner from "../../components/HandleLoading/Spinner";
+import ApiError from "../../components/HandleErrors/ApiError";
+import { colors } from "../../components/utils/ThemeColors";
+import { historyOptions } from "../../components/ApiOptions/CoinHistory";
+import { coinOptions } from "../../components/ApiOptions/CoinOptions";
 
 const CrtyptoDetails = ({ voicePageNavigation, setVoicePageNavigation }) => {
   const { coinId } = useParams();
@@ -35,7 +36,7 @@ const CrtyptoDetails = ({ voicePageNavigation, setVoicePageNavigation }) => {
         setError("failed to fetch Please check Network connection");
       });
   }, [coinId]);
-  
+
   useEffect(() => {
     setError("");
     setHistory("");

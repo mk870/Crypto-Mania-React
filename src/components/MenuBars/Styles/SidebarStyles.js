@@ -46,7 +46,7 @@ export const SidebarStyles = styled.div`
         justify-content:start;
         span{
           margin-left:5px;
-          font-size:17px;
+          font-size:15px;
         }
         &:hover{
           cursor:pointer;
@@ -72,7 +72,7 @@ export const SidebarStyles = styled.div`
         justify-content:start;
         span{
           margin-left:5px;
-          font-size:17px;
+          font-size:15px;
         }
         &:hover{
           cursor:pointer;
@@ -88,7 +88,7 @@ export const SidebarStyles = styled.div`
       justify-content:start;
       span{
         margin-left:5px;
-        font-size:17px;
+        font-size:15px;
       }
       &:hover{
         cursor:pointer;

@@ -1,45 +1,45 @@
-import React, { useState, useEffect, useContext } from "react";
-import { LoginStyles } from "./LoginStyles";
+import React, { useState, useEffect} from "react";
 import { useSelector } from "react-redux";
-import { colors } from "../utils/ThemeColors";
-import { Button2 } from "../Buttons/Button2";
-import { useNavigate } from "react-router-dom";
-import { PostApiCall } from "../DataBaseApiFunctions/PostApiCall";
-import ApiConfirmationPopUp from "../Popups/ApiConfirmationPopUp";
-import ApiError from "../HandleErrors/ApiError";
-import Spinner from "../HandleLoading/Spinner";
-import { JwtContext } from "../utils/AppContext";
-import { LoginForm } from "../FormContent/FormContent";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { backendEndPoint } from "../utils/BackendEndPoint";
+import { useNavigate } from "react-router-dom";
+
+import { SignupStyles } from "./SignupStyles";
+import ApiError from "../../components/HandleErrors/ApiError";
+import { Button2 } from "../../components/Buttons/Button2";
+import { colors } from "../../components/utils/ThemeColors";
+import { SignupForm } from "../../components/FormContent/FormContent";
+import Spinner from "../../components/HandleLoading/Spinner";
+import ApiConfirmationPopUp from "../../components/Popups/ApiConfirmationPopUp";
+import { backendEndPoint } from "../../components/utils/BackendEndPoint";
+import { PostApiCall } from "../../components/DataBaseApiFunctions/PostApiCall";
 
 const schema = yup
   .object()
   .shape({
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
     email: yup.string().email().required(),
     password: yup.string().required().min(4),
   })
   .required();
 
-const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
-  const [error, setError] = useState("");
-  const [apiData, setApiData] = useState("");
+const SignupPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
   const [popup, setPopup] = useState(false);
-  const [onload, setOnload] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [onload, setOnload] = useState(false);
+  const [apiData, setApiData] = useState("");
   const theme = useSelector((state) => state.theme.value);
-  const { value } = useContext(JwtContext);
-  const { setValue } = useContext(JwtContext);
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
-
   useEffect(() => {
     if (voicePageNavigation) {
       navigate(voicePageNavigation);
@@ -48,17 +48,15 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
       setVoicePageNavigation("");
     };
   }, [voicePageNavigation]);
-
   useEffect(() => {
     if (apiData) {
       setPopup(!popup);
     }
     if (apiData || error) {
       setOnload(false);
-      setValue(apiData.jwt);
     }
   }, [apiData, error]);
-  
+
   useEffect(() => {
     if (error) {
       setTimeout(() => {
@@ -67,25 +65,27 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
     }
   }, [error]);
 
-  const postLogin = (userData) => {
-    setApiData("");
+  const submit = (userData) => {
     setOnload(true);
+    let data = {
+      "FirstName":userData.firstName,
+      "LastName":userData.lastName,
+      "Email": userData.email,
+      "Password": userData.password
+    }
     PostApiCall(
-      `${backendEndPoint}/api/login`,
-      userData,
+      `${backendEndPoint}/user`,
+      data,
       null,
       setApiData,
       setError
     );
+    reset()
   };
-
   return (
-    <LoginStyles colors={colors(theme)}>
+    <SignupStyles colors={colors(theme)}>
       {popup && (
-        <ApiConfirmationPopUp
-          confirmation={apiData.response}
-          close={setPopup}
-        />
+        <ApiConfirmationPopUp confirmation={apiData} close={setPopup} />
       )}
       {onload ? (
         <Spinner />
@@ -98,8 +98,8 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
               </div>
 
               <div className="card">
-                <form className="form" onSubmit={handleSubmit(postLogin)}>
-                  {LoginForm.inputs.map((input, key) => (
+                <form className="form" onSubmit={handleSubmit(submit)}>
+                  {SignupForm.inputs.map((input, key) => (
                     <div className="wrapper" key={key}>
                       <label htmlFor={input.name}>{input.label}</label>
                       <input
@@ -110,24 +110,10 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
                       <p>{errors[input.name]?.message}</p>
                     </div>
                   ))}
-
                   <div className="submit">
-                    {!value && (
-                      <Button2 type="submit" colors={colors(theme)}>
-                        Login
-                      </Button2>
-                    )}
-                    {value && (
-                      <Button2
-                        onClick={() => setValue(null)}
-                        colors={colors(theme)}
-                      >
-                        Logout
-                      </Button2>
-                    )}
-                    <span onClick={() => navigate("/signup")}>
-                      Create an Account
-                    </span>
+                    <Button2 type="submit" colors={colors(theme)}>
+                      Sign Up
+                    </Button2>
                   </div>
                 </form>
               </div>
@@ -136,8 +122,8 @@ const LoginPage = ({ voicePageNavigation, setVoicePageNavigation }) => {
           {error && <ApiError error={error} />}
         </>
       )}
-    </LoginStyles>
+    </SignupStyles>
   );
 };
 
-export default LoginPage;
+export default SignupPage;

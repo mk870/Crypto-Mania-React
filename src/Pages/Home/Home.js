@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { HomeStyles } from './HomeStyles'
-import { coinsAction } from '../Features/CoinsStats'
-import { newsAction } from '../Features/NewsState'
 import axios from "axios";
-import { options } from '../ApiOptions/CoinsOptions';
 import millify from 'millify';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment'
-import ApiError from '../../components/HandleErrors/ApiError'
-import Spinner from '../../components/HandleLoading/Spinner'
 import HTMLReactParser from 'html-react-parser'
-import { colors } from '../utils/ThemeColors'
-import { aiBackendEndPoint } from '../utils/BackendEndPoint'
 
-const search = 'cryptocurrencies'
+import { HomeStyles } from './HomeStyles'
+import Spinner from '../../components/HandleLoading/Spinner';
+import ApiError from '../../components/HandleErrors/ApiError';
+import { colors } from '../../components/utils/ThemeColors';
+import { newsAction } from '../../components/Features/NewsState';
+import { options } from '../../components/ApiOptions/CoinsOptions';
+import { coinsAction } from '../../components/Features/CoinsStats';
+import { aiBackendEndPoint } from '../../components/utils/BackendEndPoint';
+
+
 const Home = ({voicePageNavigation,setVoicePageNavigation}) => {
   const [cryptos,setCryptos] = useState('')
   const [news,setNews] = useState('')

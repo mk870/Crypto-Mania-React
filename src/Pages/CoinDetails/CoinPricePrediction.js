@@ -1,14 +1,15 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import ApiError from "../HandleErrors/ApiError";
-import { historyOptions } from "../ApiOptions/CoinHistory";
-import { Button2 } from "../Buttons/Button2";
-import Spinner from "../HandleLoading/Spinner";
 import { useSelector } from "react-redux";
-import { colors } from "../utils/ThemeColors";
+
 import { CoinPricePredictionStyles } from "./Styles/CoinPricePredictionStyles";
 import PredictedLineChart from "./PredictedLineChart";
-import {aiBackendEndPoint} from "./../utils/BackendEndPoint"
+import Spinner from "../../components/HandleLoading/Spinner";
+import ApiError from "../../components/HandleErrors/ApiError";
+import { colors } from "../../components/utils/ThemeColors";
+import { Button2 } from "../../components/Buttons/Button2";
+import { aiBackendEndPoint } from "../../components/utils/BackendEndPoint";
+import { historyOptions } from "../../components/ApiOptions/CoinHistory";
 
 const CoinPricePrediction = ({ coinId, name, coinprice }) => {
   const [prediction, setPrediction] = useState("");
@@ -51,21 +52,18 @@ const CoinPricePrediction = ({ coinId, name, coinprice }) => {
     const pred = data.slice(0, 60).reverse();
     setPreddays(predictedDays);
     setLoader(true);
-    fetch(
-      `${aiBackendEndPoint}/${coinname(name)}`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          modelInputs: pred,
-          days: predictedDays,
-        }),
-        cache: "no-cache",
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    )
+    fetch(`${aiBackendEndPoint}/${coinname(name)}`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        modelInputs: pred,
+        days: predictedDays,
+      }),
+      cache: "no-cache",
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+      },
+    })
       .then((res) => {
         if (!res.ok) {
           throw Error(

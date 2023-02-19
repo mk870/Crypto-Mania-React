@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import Carousel from '../Carousel/Carousel'
-import { CryptoDashboardStyles } from './Styles/CryptoDashboardStyles'
-import Table from './Table'
-import { options } from '../ApiOptions/CoinsOptions';
 import axios from "axios";
-import Spinner from '../HandleLoading/Spinner'
-import ApiError from '../HandleErrors/ApiError'
-import { colors } from '../utils/ThemeColors'
 import { useNavigate } from 'react-router-dom'
 
+import { CryptoDashboardStyles } from './Styles/CryptoDashboardStyles'
+import Table from './Table'
+import { options } from '../../components/ApiOptions/CoinsOptions';
+import ApiError from '../../components/HandleErrors/ApiError';
+import Spinner from '../../components/HandleLoading/Spinner';
+import Carousel from '../../components/Carousel/Carousel';
+import { colors } from '../../components/utils/ThemeColors';
 
 const CryptoDashboard = ({voicePageNavigation,setVoicePageNavigation}) => {
   const coins = useSelector((state) => state.coins.value)
