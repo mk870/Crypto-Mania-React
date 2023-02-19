@@ -67,6 +67,6 @@
 * This page displays the client's crypto coins from the database and allows the client to delete their coins through the [***CryptoMania Server***](https://github.com/mk870/crypto-mania-api) Api.
 
 ### **Productionization**
-In this step, I deployed the app to heroku cloud.
+In this step, I deployed the app on Vercel.
 
 **Live Implemantation:** [CryptoMania](https://crypto-mania-react.vercel.app)
