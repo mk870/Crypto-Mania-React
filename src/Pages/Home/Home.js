@@ -61,12 +61,13 @@ const Home = ({voicePageNavigation,setVoicePageNavigation}) => {
       }
       })
     .then(data =>{
-      
+      console.log(data)
       dispatch(newsAction(data.articles))
       setNews(data.articles)
       setError('')
     })
     .catch(e =>{
+      console.log(e)
       setError(e.message)
     })
       
@@ -131,7 +132,7 @@ const Home = ({voicePageNavigation,setVoicePageNavigation}) => {
           ))}
         </div>
       </div>}
-      {news && !error  && <div className="topnews">
+      {news.length > 0 && !error  && <div className="topnews">
         <div className="head">
           <h3>Top 4 Crypto Currency News In The World</h3>
           <span onClick={()=>navigate('/news')}>Show more...</span>

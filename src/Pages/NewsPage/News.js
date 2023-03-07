@@ -74,12 +74,12 @@ const News = ({ voicePageNavigation, setVoicePageNavigation }) => {
 
   return (
     <NewsStyles colors={colors(theme)}>
-      <div className="header">
+      {news.length > 0 &&<div className="header">
         <h2>Latest Crypto currency news</h2>
         <span className="moreInfo">
           Click News Article for more information
         </span>
-      </div>
+      </div>}
       {news && !error && (
         <div className="grid">
           {news.map((story, index) => (
@@ -108,6 +108,9 @@ const News = ({ voicePageNavigation, setVoicePageNavigation }) => {
           ))}
         </div>
       )}
+      {news.length === 0 && <div className="no-articles">
+        <h3>No news articles found at the moment</h3>
+      </div>}
       {error && <ApiError error={error} />}
       {!error && !news && <Spinner />}
     </NewsStyles>

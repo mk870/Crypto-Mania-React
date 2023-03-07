@@ -21,6 +21,12 @@ export const NewsStyles = styled.div`
       font-weight:bold;
     }
   }
+  .no-articles{
+    height: 40vh;
+    h3{
+      color:${props=>props.colors[5]};
+    }
+  }
   .grid{
     display:grid;
     grid-gap:15px;
